@@ -5,6 +5,7 @@
 #include <imgui/imgui.h>
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
+#include "../headers/TestClearColor.h"
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
 
@@ -14,6 +15,7 @@ const unsigned int SCR_HEIGHT = 600;
 
 int main()
 {
+    // std::cout << "here\n";
     // glfw: initialize and configure
     // ------------------------------
     glfwInit();
@@ -32,7 +34,7 @@ int main()
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-
+    // std::cout << "here\n";
     // glad: load all OpenGL function pointers
     // ---------------------------------------
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -40,6 +42,7 @@ int main()
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
+    // std::cout << "here\n";
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO();
@@ -49,6 +52,10 @@ int main()
     ImGui_ImplOpenGL3_Init(glsl_version);
     bool show_demo_window = true;
 
+    test::Test *currentTest = nullptr;
+    test::TestMenu testMenu(currentTest);
+    currentTest = &testMenu;
+    testMenu.RegisterTest<test::TestClearColor>("Clear Color");
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -56,27 +63,29 @@ int main()
         // input
         // -----
         processInput(window);
-
-        // render
-        // ------
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-        if (show_demo_window)
-            ImGui::ShowDemoWindow(&show_demo_window);
+
+        if (currentTest != nullptr)
         {
-            ImGui::Begin("Random Window Test");
-            if (ImGui::Button("TestButton :D"))
+            currentTest->OnUpdate(0.f);
+            currentTest->OnRender();
+            ImGui_ImplOpenGL3_NewFrame();
+            ImGui_ImplGlfw_NewFrame();
+            ImGui::NewFrame();
+            ImGui::Begin("Test Window ");
+            if (currentTest != &testMenu && ImGui::Button("<-"))
             {
-                std::cout << "Clicked The button :D\n";
+                delete currentTest;
+                currentTest = &testMenu;
             }
+            currentTest->OnImGuiRender();
             ImGui::End();
+            ImGui::EndFrame();
+            ImGui::Render();
         }
-        ImGui::EndFrame();
-        ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
@@ -86,7 +95,8 @@ int main()
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-
+    if (currentTest != &testMenu)
+        delete currentTest;
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
     glfwTerminate();

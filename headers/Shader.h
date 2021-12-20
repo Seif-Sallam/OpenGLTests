@@ -1,43 +1,38 @@
+#pragma once
 #include <string>
-#include <iostream>
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
-#include "glm/glm.hpp"
 #include <unordered_map>
+#include "glm/glm.hpp"
+
+struct ShaderProgramSource {
+	std::string VertexSource;
+	std::string FragmnetSource;
+};
 class Shader
 {
 public:
-    Shader(const std::string &fragmentShader, const std::string &vertexShader);
-    ~Shader();
-    void Bind();
-    void UnBind();
+	Shader(const std::string& filename);
+	~Shader();
 
-    void SetFloat(const std::string &name, float value) const;
-    void SetInt(const std::string &name, int value) const;
-    void SetBool(const std::string &name, bool value) const;
+	void Bind() const;
+	void Unbind() const;
 
-    void SetVec2(const std::string &name, const glm::vec2 &value) const;
-    void SetVec2(const std::string &name, float x, float y) const;
-
-    void SetVec3(const std::string &name, const glm::vec3 &value) const;
-    void SetVec3(const std::string &name, float x, float y, float z) const;
-
-    void SetVec4(const std::string &name, const glm::vec4 &value) const;
-    void SetVec4(const std::string &name, float x, float y, float z, float w) const;
-
-    void SetMat2(const std::string &name, const glm::mat2 &value) const;
-
-    void SetMat3(const std::string &name, const glm::mat3 &value) const;
-
-    void SetMat4(const std::string &name, const glm::mat4 &value) const;
-
-    unsigned int ID;
+	//Set Uniform
+	void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
+	void SetUniform1f(const std::string& name, float v);
+	void SetUniform1i(const std::string& name, int v);
+	void SetUniformMat4f(const std::string& name, const glm::mat4& mat);
 
 private:
-    void CheckError(unsigned int id, const std::string &type);
-    uint32_t GetUniformLocation(const std::string &name) const;
-
-    mutable std::unordered_map<std::string, uint32_t> m_UniformLocations;
-    std::string m_FragmentShaderName;
-    std::string m_VertexShaderName;
+	int GetUniformLocation(const std::string& name);
+	unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader);
+	unsigned int CompileShaders(unsigned int type, const std::string& source);
+	ShaderProgramSource ParseShader(const std::string& filepath);
+	
+	
+private:
+	std::string m_FilePath;
+	unsigned int m_RendererID;
+	// caching for uniform
+	std::unordered_map<std::string, int> m_UniformLocationCache;
 };
+

@@ -6,6 +6,15 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "../headers/TestClearColor.h"
+#include "../headers/TestTexture.h"
+
+#include "../headers/Renderer.h"
+#include "../headers/VertexArray.h"
+#include "../headers/VertexBuffer.h"
+#include "../headers/VertexBufferLayout.h"
+#include "../headers/IndexBuffer.h"
+#include "../headers/Texture.h"
+
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
 
@@ -56,6 +65,7 @@ int main()
     test::TestMenu testMenu(currentTest);
     currentTest = &testMenu;
     testMenu.RegisterTest<test::TestClearColor>("Clear Color");
+    testMenu.RegisterTest<test::TestTexture>("Texture Test");
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))

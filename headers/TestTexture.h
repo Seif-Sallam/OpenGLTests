@@ -22,9 +22,9 @@ namespace test
         VertexArray m_VAO;
         VertexBuffer *m_VBO;
         IndexBuffer *m_IBO;
-        VertexBufferLayout m_VBLayout;
         Shader *m_Shader;
         Texture *m_Texture;
+        VertexBufferLayout m_VBLayout;
         glm::vec3 m_TranslationA, m_TranslationB;
     };
 }

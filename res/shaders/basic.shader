@@ -23,6 +23,7 @@ in vec2 v_TexCoords;
 
 void main()
 {
-	vec4 texColor = texture(u_Texture, v_TexCoords) * u_Color;
+   vec4 tex = texture(u_Texture, v_TexCoords);
+	vec4 texColor = u_Color;
 	color = texColor;
 }

@@ -7,6 +7,7 @@
 #include "imgui/imgui_impl_opengl3.h"
 #include "../headers/TestClearColor.h"
 #include "../headers/TestTexture.h"
+#include "../headers/TestInstantiation.h"
 
 #include "../headers/Renderer.h"
 #include "../headers/VertexArray.h"
@@ -24,92 +25,101 @@ const unsigned int SCR_HEIGHT = 600;
 
 int main()
 {
-    // std::cout << "here\n";
-    // glfw: initialize and configure
-    // ------------------------------
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    // glfw window creation
-    // --------------------
-    GLFWwindow *window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
-    if (window == NULL)
+    try
     {
-        std::cout << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    // std::cout << "here\n";
-    // glad: load all OpenGL function pointers
-    // ---------------------------------------
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        std::cout << "Failed to initialize GLAD" << std::endl;
-        return -1;
-    }
-    // std::cout << "here\n";
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO &io = ImGui::GetIO();
-    ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    const char *glsl_version = "#version 130";
-    ImGui_ImplOpenGL3_Init(glsl_version);
-    bool show_demo_window = true;
+        // std::cout << "here\n";
+        // glfw: initialize and configure
+        // ------------------------------
+        glfwInit();
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    test::Test *currentTest = nullptr;
-    test::TestMenu testMenu(currentTest);
-    currentTest = &testMenu;
-    testMenu.RegisterTest<test::TestClearColor>("Clear Color");
-    testMenu.RegisterTest<test::TestTexture>("Texture Test");
-    // render loop
-    // -----------
-    while (!glfwWindowShouldClose(window))
-    {
-        // input
-        // -----
-        processInput(window);
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        if (currentTest != nullptr)
+        // glfw window creation
+        // --------------------
+        GLFWwindow *window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
+        if (window == NULL)
         {
-            currentTest->OnUpdate(0.f);
-            currentTest->OnRender();
-            ImGui_ImplOpenGL3_NewFrame();
-            ImGui_ImplGlfw_NewFrame();
-            ImGui::NewFrame();
-            ImGui::Begin("Test Window ");
-            if (currentTest != &testMenu && ImGui::Button("<-"))
-            {
-                delete currentTest;
-                currentTest = &testMenu;
-            }
-            currentTest->OnImGuiRender();
-            ImGui::End();
-            ImGui::EndFrame();
-            ImGui::Render();
+            std::cout << "Failed to create GLFW window" << std::endl;
+            glfwTerminate();
+            return -1;
         }
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        glfwMakeContextCurrent(window);
+        glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+        // std::cout << "here\n";
+        // glad: load all OpenGL function pointers
+        // ---------------------------------------
+        if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+        {
+            std::cout << "Failed to initialize GLAD" << std::endl;
+            return -1;
+        }
+        // std::cout << "here\n";
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+        ImGuiIO &io = ImGui::GetIO();
+        ImGui::StyleColorsDark();
+        ImGui_ImplGlfw_InitForOpenGL(window, true);
+        const char *glsl_version = "#version 130";
+        ImGui_ImplOpenGL3_Init(glsl_version);
+        bool show_demo_window = true;
 
-        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-        // -------------------------------------------------------------------------------
-        glfwSwapBuffers(window);
-        glfwPollEvents();
+        test::Test *currentTest = nullptr;
+        test::TestMenu testMenu(currentTest);
+        currentTest = &testMenu;
+        testMenu.RegisterTest<test::TestClearColor>("Clear Color");
+        testMenu.RegisterTest<test::TestTexture>("Texture Test");
+        testMenu.RegisterTest<test::TestInstantiation>("Test Instantiation");
+        // render loop
+        // -----------
+        while (!glfwWindowShouldClose(window))
+        {
+            // input
+            // -----
+            processInput(window);
+            glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
+
+            if (currentTest != nullptr)
+            {
+                currentTest->OnUpdate(0.f);
+                currentTest->OnRender();
+                ImGui_ImplOpenGL3_NewFrame();
+                ImGui_ImplGlfw_NewFrame();
+                ImGui::NewFrame();
+                ImGui::Begin("Test Window");
+                if (currentTest != &testMenu && ImGui::Button("<-"))
+                {
+                    delete currentTest;
+                    currentTest = &testMenu;
+                }
+                currentTest->OnImGuiRender();
+                ImGui::End();
+                ImGui::EndFrame();
+                ImGui::Render();
+            }
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+            // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+            // -------------------------------------------------------------------------------
+            glfwSwapBuffers(window);
+            glfwPollEvents();
+        }
+
+        ImGui_ImplOpenGL3_Shutdown();
+        ImGui_ImplGlfw_Shutdown();
+        ImGui::DestroyContext();
+        if (currentTest != &testMenu)
+            delete currentTest;
+        // glfw: terminate, clearing all previously allocated GLFW resources.
+        // ------------------------------------------------------------------
+        glfwTerminate();
+    }
+    catch (std::exception e)
+    {
+        std::cout << e.what() << std::endl;
     }
 
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
-    if (currentTest != &testMenu)
-        delete currentTest;
-    // glfw: terminate, clearing all previously allocated GLFW resources.
-    // ------------------------------------------------------------------
-    glfwTerminate();
     return 0;
 }
 

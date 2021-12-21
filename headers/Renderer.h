@@ -6,7 +6,7 @@
 #include "VertexArray.h"
 #include "Shader.h"
 #include <assert.h>
-
+#include <exception>
 #define ASSERT(x) \
     if (!(x))     \
         throw;

@@ -27,6 +27,7 @@ OBJS= $(subst $(SRC_DIR), $(OBJ_DIR), $(patsubst %.cpp, %.o, $(SRCS)))
 ADDITIONAL_OBJS = $(OBJ_DIR)glad.o $(OBJ_DIR)stbimage.o
 LIBS_FLAGS = -L$(GLFW_LIBS_DIR) -L$(IMGUI_LIBS_DIR)
 GLFW_DIR = ./Thirdparty/glfw/include/
+
 all: CreateImGui $(OBJS) $(ADDITIONAL_OBJS)
 	$(CC) $(CCFLAGS) $(OBJS) $(ADDITIONAL_OBJS) -o $(PROGRAM_NAME) $(LIBS_FLAGS) $(LIBS)
 

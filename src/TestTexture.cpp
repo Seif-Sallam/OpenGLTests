@@ -40,6 +40,10 @@ namespace test
 
     TestTexture::~TestTexture()
     {
+        delete m_VBO;
+        delete m_IBO;
+        delete m_Shader;
+        delete m_Texture;
     }
 
     void TestTexture::OnImGuiRender()

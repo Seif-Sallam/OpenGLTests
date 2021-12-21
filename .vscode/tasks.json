@@ -5,11 +5,30 @@
             "label": "C/C++: g++ build active file",
             "command": "/usr/bin/g++",
             "args": [
-                "-fdiagnostics-color=always",
                 "-g",
-                "${file}",
+                "-std=c++17",
+                "-I${workspaceFolder}/",
+                "-I${workspaceFolder}/Thirdparty/glad/",
+                "-I${workspaceFolder}/Thirdparty/glfw/include/",
+                "-I${workspaceFolder}/Thirdparty/imgui/",
+                "-I${workspaceFolder}/Thirdparty/glm/",
+                "-I${workspaceFolder}/Thirdparty/KHR/",
+                "-I${workspaceFolder}/Thirdparty/stbimage/",
+                "*.cpp",
+                "../Thirdparty/glad/glad.c",
+                "../Thirdparty/stbimage/stbimage/stb_image.cpp",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}"
+                "../DebugVersion",
+                "-L${workspaceFolder}/Thirdparty/glfw/",
+                "-L${workspaceFolder}/Thirdparty/imgui/imgui/lib/",
+                "-lGL",
+                "-lglfw3",
+                "-lGLU",
+                "-pthread",
+                "-ldl",
+                "-lrt",
+                "-lXi",
+                "-limgui"
             ],
             "options": {
                 "cwd": "${fileDirname}"

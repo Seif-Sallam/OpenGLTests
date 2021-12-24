@@ -54,7 +54,7 @@ namespace test
         }
         ImGui::Begin("Entities Number");
         {
-            ImGui::Text("The number of entities drawn: %d", m_Transformations.size());
+            ImGui::Text("The number of entities drawn: %d", int(m_Transformations.size()));
             ImGui::Text("Framerate: %0.3f", ImGui::GetIO().Framerate);
         }
 

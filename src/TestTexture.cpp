@@ -75,8 +75,7 @@ namespace test
             m_Shader->Bind();
             m_Shader->SetUniform4f("u_Color", r, 0.3f, 0.8f, 1.0f);
             m_Shader->SetUniformMat4f("u_MVP", mvp);
-            Renderer renderer;
-            renderer.Draw(m_VAO, *m_IBO, *m_Shader);
+            Renderer::Draw(m_VAO, *m_IBO, *m_Shader);
         }
         {
             glm::mat4 model = glm::translate(glm::mat4(1.f), m_TranslationB);
@@ -86,8 +85,7 @@ namespace test
             m_Shader->Bind();
             m_Shader->SetUniform4f("u_Color", r, 0.3f, 0.8f, 1.0f);
             m_Shader->SetUniformMat4f("u_MVP", mvp);
-            Renderer renderer;
-            renderer.Draw(m_VAO, *m_IBO, *m_Shader);
+            Renderer::Draw(m_VAO, *m_IBO, *m_Shader);
         }
     }
 }

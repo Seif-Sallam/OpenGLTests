@@ -6,22 +6,21 @@ namespace test
     {
         m_VAO.Bind();
         m_Layout.Push<float>(2); // positions
-        m_Layout.Push<float>(2); // Texture Coord
         GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
         GLCall(glEnable(GL_BLEND));
         float data[] = {
-            -50.0f, -50.0f, 0.0f, 0.0f,
-            50.0f, -50.0f, 1.0f, 0.0f,
-            50.0f, 50.0f, 1.0f, 1.0f,
-            -50.0f, 50.0f, 0.0f, 1.0f};
-        m_VBO = new VertexBuffer(data, 16 * sizeof(float));
+            -50.0f, -50.0f,
+            50.0f, -50.0f,
+            50.0f, 50.0f,
+            -50.0f, 50.0f};
+        m_VBO = new VertexBuffer(data, 8 * sizeof(float));
         m_VAO.AddBuffer(*m_VBO, m_Layout);
         unsigned int indicies[] = {
             0, 1, 2,
             2, 3, 0};
         m_IBO = new IndexBuffer(indicies, 6);
 
-        m_Shader = new Shader("res/shaders/basic.shader");
+        m_Shader = new Shader("res/shaders/Instantiation.glsl");
         m_Shader->Bind();
     }
 
@@ -39,7 +38,7 @@ namespace test
     void TestInstantiation::OnImGuiRender()
     {
         static glm::vec3 positions;
-        static float colors[4];
+        static float colors[4] = {0.f, 0.f, 0.f, 1.0f};
         ImGui::TextUnformatted("Entity Position: ");
         ImGui::SameLine();
 
@@ -79,8 +78,6 @@ namespace test
             glm::mat4 model = glm::translate(glm::mat4(1.f), m_Transformations[i]);
             glm::mat4 mvp = proj * view * model;
             m_Shader->Bind();
-            // std::cout << m_Colors[i].r << "\n";
-
             m_Shader->SetUniform4fv("u_Color", &m_Colors[i][0]);
             m_Shader->SetUniformMat4f("u_MVP", mvp);
             Renderer renderer;

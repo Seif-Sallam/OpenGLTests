@@ -25,9 +25,8 @@ namespace test
 
         m_VAO.AddBuffer(*m_VBO, m_VBLayout);
         m_IBO = new IndexBuffer(indicies, 6);
-        m_Shader = new Shader("res/shaders/basic.shader");
+        m_Shader = new Shader("res/shaders/basic.glsl");
         m_Shader->Bind();
-        m_Shader->SetUniform4f("u_Color", 0.2f, 0.3f, 0.8f, 1.0f);
         m_Texture = new Texture("res/textures/Jerry.png");
         m_Texture->Bind();
         m_Shader->SetUniform1i("u_Texture", 0);
@@ -55,15 +54,6 @@ namespace test
 
     void TestTexture::OnRender()
     {
-        static float r = 0.05f;
-        static float increment = 0.05f;
-        if (r > 1.f)
-            increment = -0.005f;
-        else if (r < 0.f)
-            increment = 0.005f;
-
-        r += increment;
-
         glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 540.f, -1.0f, 1.0f);
         glm::mat4 view = glm::translate(glm::mat4(1.f), glm::vec3(0.0f, 0.0f, 0.0f));
 
@@ -73,7 +63,6 @@ namespace test
 
             m_Texture->Bind();
             m_Shader->Bind();
-            m_Shader->SetUniform4f("u_Color", r, 0.3f, 0.8f, 1.0f);
             m_Shader->SetUniformMat4f("u_MVP", mvp);
             Renderer::Draw(m_VAO, *m_IBO, *m_Shader);
         }
@@ -83,7 +72,6 @@ namespace test
 
             m_Texture->Bind();
             m_Shader->Bind();
-            m_Shader->SetUniform4f("u_Color", r, 0.3f, 0.8f, 1.0f);
             m_Shader->SetUniformMat4f("u_MVP", mvp);
             Renderer::Draw(m_VAO, *m_IBO, *m_Shader);
         }

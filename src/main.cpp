@@ -18,10 +18,11 @@
 #include "../headers/VertexBufferLayout.h"
 #include "../headers/IndexBuffer.h"
 #include "../headers/Texture.h"
+#include "../headers/Vec2.h"
 
 int main()
 {
-    Window window(800, 600, "LearnOpengl");
+    Window window(800, 600, "LearnOpengl", false);
 
     test::Test *currentTest = nullptr;
     test::TestMenu testMenu(currentTest);

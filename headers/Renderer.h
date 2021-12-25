@@ -2,11 +2,10 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
-#include "IndexBuffer.h"
-#include "VertexArray.h"
-#include "Shader.h"
 #include <assert.h>
-#include <exception>
+
+#include "Vec.h"
+
 #define ASSERT(x) \
     if (!(x))     \
         throw;
@@ -19,6 +18,10 @@
 void GLClearError();
 
 bool GLLogCall(const char *function, const char *file, int line);
+
+class IndexBuffer;
+class VertexArray;
+class Shader;
 
 class Renderer
 {

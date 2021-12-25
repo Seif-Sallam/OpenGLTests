@@ -6,7 +6,7 @@
 
 #include <iostream>
 #include <string>
-#include "Vec2.h"
+#include "Vec.h"
 
 class Window
 {

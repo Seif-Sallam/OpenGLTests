@@ -1,4 +1,8 @@
 #include "../headers/Renderer.h"
+#include "../headers/Shader.h"
+#include "../headers/VertexArray.h"
+#include "../headers/IndexBuffer.h"
+
 #include <iostream>
 void GLClearError()
 {

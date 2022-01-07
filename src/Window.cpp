@@ -6,8 +6,9 @@
 int32_t Window::m_Height;
 int32_t Window::m_Width;
 
+GLFWwindow *Window::m_Window = nullptr;
+
 Window::Window(int width, int height, const std::string &title, bool fullscreen)
-    : m_Window(nullptr)
 {
     m_Width = width;
     m_Height = height;
@@ -41,7 +42,6 @@ Window::Window(int width, int height, const std::string &title, bool fullscreen)
 }
 
 Window::Window(Vec2i resolution, const std::string &title, bool fullscreen)
-    : m_Window(nullptr)
 {
     m_Width = resolution.x;
     m_Height = resolution.y;
@@ -123,4 +123,9 @@ Window::~Window()
     ImGui::DestroyContext();
     glfwTerminate();
     m_Window = nullptr;
+}
+
+GLFWwindow *Window::GetWindow()
+{
+    return m_Window;
 }

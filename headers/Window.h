@@ -13,6 +13,7 @@ class Window
 public:
     Window(int width, int height, const std::string &title, bool fullscreen = false);
     Window(Vec2i resolution, const std::string &title, bool fullscreen = false);
+    static GLFWwindow *GetWindow();
     bool IsOpen();
     void SwapBuffers();
     void PollEevnts();
@@ -22,6 +23,6 @@ private:
     static void FrameBufferSizeCallBack(GLFWwindow *window, int width, int height);
     void Init();
     void InitImGui();
-    GLFWwindow *m_Window;
+    static GLFWwindow *m_Window;
     static int32_t m_Width, m_Height;
 };

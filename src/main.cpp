@@ -8,6 +8,7 @@
 #include "../headers/TestClearColor.h"
 #include "../headers/TestTexture.h"
 #include "../headers/TestInstantiation.h"
+#include "../headers/Test3D.h"
 
 #include "../headers/Window.h"
 #include "../headers/OpenGLImGui.h"
@@ -18,7 +19,6 @@
 #include "../headers/VertexBufferLayout.h"
 #include "../headers/IndexBuffer.h"
 #include "../headers/Texture.h"
-#include "../headers/Vec2.h"
 
 int main()
 {
@@ -30,15 +30,22 @@ int main()
     testMenu.RegisterTest<test::TestClearColor>("Clear Color");
     testMenu.RegisterTest<test::TestTexture>("Texture Test");
     testMenu.RegisterTest<test::TestInstantiation>("Test Instantiation");
+    testMenu.RegisterTest<test::Test3D>("Test 3D");
 
+    float lastFrame = 0.f;
+    float currentFrame = 0.f;
     while (window.IsOpen())
     {
+        currentFrame = glfwGetTime();
+        float deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         if (currentTest != nullptr)
         {
-            currentTest->OnUpdate(0.f);
+            currentTest->OnUpdate(deltaTime);
             currentTest->OnRender();
             OpenGLImGui::NewFrame();
             ImGui::Begin("Test Window");

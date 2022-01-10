@@ -16,12 +16,19 @@ This project was developed on Linux Ubuntu 20.0. It also contains a Makefile tha
 
 ## Screenshots
 
+<<<<<<< HEAD
 Clear Color Test:
 <img src= ./Images/Screenshot2.png>
 
 Texture Test:
 <img src= ./Images/Screenshot1.png>
 
+=======
+<img src= ./Images/Screenshot1.png>
+
+<img src= ./Images/Screenshot2.png>
+
+>>>>>>> 380017c0d87ae795f861b078dc459119fd2fe077
 ## Special Thanks:
 
 Special Thanks to [The Cherno OpenGl playlist](https://youtube.com/playlist?list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2) where he teaches about the basic concepts of using opengl and C++.
